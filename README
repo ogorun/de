@@ -1,0 +1,28 @@
+
+De (Dynamic Expression) module provides means to build and evaluate
+dynamic expression of arbitrary complecity and operands/operators nature.
+
+Expression is considered as tree consisted of operands and operators.
+Operater must have child nodes. Operand is terminal node.
+
+Tree example:
+   (a + b) * c + d
+
+   - +
+   --- *
+   ----- +
+   ------- a
+   ------- b
+   --- d
+
+   Here "+" and "*" are operators,
+   "a", "b" and "d" are operands
+
+Expression tree structure is built with the help of <rubytree> gem
+(https://rubygems.org/gems/rubytree)
+
+In addition to basic classes of Expression, Operand and Operator
+module provides some extensions for different nature expressions:
+  - Boolean expressions
+  - Sunspot Solr search expressions
+
