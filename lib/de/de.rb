@@ -79,13 +79,15 @@ module De
     #
     # === Input
     #
+    #   params<Hash>:: optional paramters hash
+    #
     # no input
     #
     # === Output
     #
     #  true
     #
-    def evaluate
+    def evaluate(params = nil)
       raise Error::InvalidExpressionError unless valid?
       true
     end

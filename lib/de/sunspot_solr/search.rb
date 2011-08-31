@@ -69,7 +69,8 @@ module De
       #            :name => {:type => :string, :dynamic => false},
       #            :price => {:type => :integer, :dynamic => true}
       #          },
-      #          :dynamics => {:integer => :int_params, :string => :string_params, :time => :time_params, :text => :string_params}
+      #          :dynamics => {:integer => :int_params, :string => :string_params, :time => :time_params, :text => :string_params},
+      #          :per_page => 30
       #        })
       #
       def initialize(name, klass, options = {}, operands = nil)
@@ -160,16 +161,27 @@ module De
       #
       # Evaluator
       #
+      # params<Hash>:: optional parameters hash
+      #   Supported hash keys:
+      #     :page - gives page for paging.
+      #       Number of results per page is defined by @option[:per_page] parameter
+      #       Default values: page - 1, per_page - 10000
+      #
       # === Output
       #
       # Sunspot Search object
       # built on its current tree operators and operands
       #
-      def evaluate
+      def evaluate(params = nil)
         super
+
+        page = params && params[:page] ? params[:page] : 1
+        per_page = @options[:per_page] || 10000
 
         search_string = "Sunspot.search(#{Kernel.const_get(@klass)}) do
           #{children.map {|child| child.evaluate + "\n" } }
+
+          paginate(:page => #{page}, :per_page => #{per_page})
         end"
 
         instance_eval search_string
