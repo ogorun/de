@@ -15,7 +15,7 @@ class DeExpressionTest < Test::Unit::TestCase
   end
 
   def test_add
-    operator = SomeOperator.new('some operator')
+    operator = SomeOperator.new('some operator', 'some operator')
     assert_nothing_raised(De::Error::TypeError) { @expression << operator }
     assert_equal(@expression.children[0], operator)
 

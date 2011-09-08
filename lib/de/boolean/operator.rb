@@ -36,9 +36,9 @@ module De
       # operands<Array>:: (optional) array of Operand objects.
       #    If given they are added as children to current operator
       #
-      def initialize(name, operands = nil)
+      def initialize(name, content, operands = nil)
         raise Error::AbstractClassObjectCreationError if instance_of? BooleanOperator
-        super(name, operands)
+        super(name, content, operands)
       end
 
       #
@@ -67,7 +67,7 @@ module De
       #    If given they are added as children to current operator
       #
       def initialize(operands = nil)
-        super("AND-#{rand(1000)}", operands)
+        super("AND-#{rand(1000)}", 'AND', operands)
       end
 
       def evaluate
@@ -92,7 +92,7 @@ module De
       #    If given they are added as children to current operator
       # 
       def initialize(operands = nil)
-        super("OR-#{rand(1000)}", operands)
+        super("OR-#{rand(1000)}", 'OR', operands)
       end
 
       def evaluate
@@ -117,7 +117,7 @@ module De
       #    If given it is added as child to current operator
       #
       def initialize(operand = nil)
-        super("NOT-#{rand(1000)}", operand ? [operand] : nil)
+        super("NOT-#{rand(1000)}", 'NOT', operand ? [operand] : nil)
       end
 
       def <<(obj)

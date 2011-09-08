@@ -28,6 +28,7 @@
 #
 
 require 'tree'
+require 'active_support/inflector'
 require 'de/error'
 
 module De
@@ -104,6 +105,43 @@ module De
       @content.hash
     end
     
+    def to_s
+      str = @content
+      str << '(%s)' % children.map { |child| child.to_s }.join(', ') if children.length > 0
+
+      str
+    end
+
+    def to_hash
+      {
+        :name => @name,
+        :content => @content,
+        :class => self.class.name,
+        :children => children.map { |child| child.to_hash }
+      }
+    end
+
+    class << self
+
+      def load(hash)
+        raise Error::InvalidExpressionError if (hash.keys - [:name, :content, :class, :children]).length > 0
+
+        klass = hash[:class].constantize
+        p klass
+        p klass.method(:new).arity
+        params = case klass.method(:new).arity
+        when -1,0 then []
+        when -2,1 then [hash[:name]]
+        else [hash[:name], hash[:content]]
+        end
+        p "params:"
+        p params
+        
+        obj = klass.send(:new, *params)
+        hash[:children].each { |child| obj << load(child) }
+      end
+    end
+    
   end
 
   #
@@ -126,9 +164,9 @@ module De
     # operands<Array>:: (optional) array of Operand objects.
     #    If given they are added as children to current operator
     #
-    def initialize(name, operands = nil)
+    def initialize(name, content, operands = nil)
       raise Error::AbstractClassObjectCreationError if instance_of? Operator
-      super(name)
+      super(name, content)
 
       unless operands.nil?
         raise Error::TypeError unless operands.is_a?(Array)
@@ -165,7 +203,7 @@ module De
     # Define hash function to get equal results for operators from the same class and with the equal children
     #
     def hash
-      [self.class.name, children.map { |el| el.hash}].hash
+      [self.class.name, children.map { |el| el.hash }].hash
     end
   end
 
