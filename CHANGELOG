@@ -1,0 +1,18 @@
+Change log:
+===========
+
+Version 0.0.2 (August 30, 2011)
+===============================
+Evaluate parametrization possibility is added; parameter page is used for sunspot solr search evaluation
+
+Version 0.0.3 (September 11, 2011)
+==================================
+Date type support added for SunspotSolr::Search
+
+Version 0.0.4 (September 23, 2011)
+==================================
+*) De::Expression#to_s method overriden
+*) De::Expression @name attribute is writable
+*) Bug fix: De::Expression prevents error-prone trials to add child with name already existent in tree
+*) De::SunspotSolr::Search#evaluate support for per_page parameter
+*) De::SunspotSolr::Search#results method added
