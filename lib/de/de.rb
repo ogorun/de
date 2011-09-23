@@ -27,6 +27,7 @@
 #  - Sunspot Solr search expressions
 #
 
+
 require 'tree'
 require 'active_support/inflector'
 require 'de/error'
@@ -53,7 +54,8 @@ module De
     #
     def <<(obj)
       raise Error::TypeError unless (obj.is_a?(Operator) or obj.is_a?(Operand))
-      super(obj)
+      added = added_obj(obj)
+      super(added)
     end
 
     #
@@ -106,40 +108,62 @@ module De
     end
     
     def to_s
-      str = @content
-      str << '(%s)' % children.map { |child| child.to_s }.join(', ') if children.length > 0
+      str = @content.nil? ? '' : @content
+      str +=  '(%s)' % children.map { |child| child.to_s }.join(', ') if children.length > 0
 
       str
     end
 
-    def to_hash
-      {
-        :name => @name,
-        :content => @content,
-        :class => self.class.name,
-        :children => children.map { |child| child.to_hash }
-      }
-    end
+#    def to_hash
+#      {
+#        :name => @name,
+#        :content => @content,
+#        :class => self.class.name,
+#        :children => children.map { |child| child.to_hash }
+#      }
+#    end
 
     class << self
 
-      def load(hash)
-        raise Error::InvalidExpressionError if (hash.keys - [:name, :content, :class, :children]).length > 0
+#      def load(hash)
+#        raise Error::InvalidExpressionError if (hash.keys - [:name, :content, :class, :children]).length > 0
+#
+#        klass = hash[:class].constantize
+#        params = case klass.method(:new).arity
+#        when -1,0 then []
+#        when -2,1 then [hash[:name]]
+#        else [hash[:name], hash[:content]]
+#        end
+#
+#        obj = klass.send(:new, *params)
+#        hash[:children].each { |child| obj << load(child) }
+#      end
+    end
 
-        klass = hash[:class].constantize
-        p klass
-        p klass.method(:new).arity
-        params = case klass.method(:new).arity
-        when -1,0 then []
-        when -2,1 then [hash[:name]]
-        else [hash[:name], hash[:content]]
-        end
-        p "params:"
-        p params
-        
-        obj = klass.send(:new, *params)
-        hash[:children].each { |child| obj << load(child) }
+    private
+
+    #
+    # Object to be added to current one
+    #
+    # Checks and prevents trial to add element with name already existent in objects children
+    #
+    # === Input
+    #
+    #  obj <Operator|Operand>:: potential child object
+    #
+    #  === Output
+    #
+    #  <Operator|Operand>
+    #
+    def added_obj(obj)
+      dup_obj = obj
+      counter = 0
+      while @children_hash.key?(dup_obj.name) && counter < 5
+        dup_obj.name = "#{dup_obj.name}_#{rand(1000000)}"
+        counter += 1
       end
+
+      dup_obj
     end
     
   end
@@ -248,3 +272,8 @@ module De
 
 end
 
+module Tree
+  class TreeNode
+    attr_accessor :name
+  end
+end
