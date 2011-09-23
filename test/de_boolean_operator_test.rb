@@ -13,29 +13,29 @@ class DeBooleanOperatorTest < Test::Unit::TestCase
     assert_nothing_raised(De::Error::AbstractClassObjectCreationError) { SomeOperator.new('some name', 'some operator') }
   end
 
-  def test_to_hash
-    and1 = De::Boolean::And.new
-    operand1 = De::Boolean::Operand.new('some name', true)
+#  def test_to_hash
+#    and1 = De::Boolean::And.new
+#    operand1 = De::Boolean::Operand.new('some name', true)
+#
+#    and1 << operand1
+#    assert_equal({
+#        :class => "De::Boolean::And",
+#        :children => [{:class=>"De::Boolean::Operand", :children=>[], :name=>"some name", :content=>true}],
+#        :name => and1.name,
+#        :content => "AND"},
+#      and1.to_hash)
+#  end
 
-    and1 << operand1
-    assert_equal({
-        :class => "De::Boolean::And",
-        :children => [{:class=>"De::Boolean::Operand", :children=>[], :name=>"some name", :content=>true}],
-        :name => and1.name,
-        :content => "AND"},
-      and1.to_hash)
-  end
-
-  def test_load
-    and1 = De::Boolean::And.new
-    operand1 = De::Boolean::Operand.new('some name', true)
-
-    and1 << operand1
-    hsh = and1.to_hash
-    assert_equal(and1, De::Expression.load(hsh))
-
-
-  end
+#  def test_load
+#    and1 = De::Boolean::And.new
+#    operand1 = De::Boolean::Operand.new('some name', true)
+#
+#    and1 << operand1
+#    hsh = and1.to_hash
+#    assert_equal(and1, De::Expression.load(hsh))
+#
+#
+#  end
 
   def test_to_s
     and1 = De::Boolean::And.new
