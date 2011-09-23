@@ -161,11 +161,13 @@ module De
       #
       # Evaluator
       #
+      # === Input
+      # 
       # params<Hash>:: optional parameters hash
       #   Supported hash keys:
-      #     :page - gives page for paging.
-      #       Number of results per page is defined by @option[:per_page] parameter
-      #       Default values: page - 1, per_page - 10000
+      #     :page - gives page for paging (default - 1)
+      #     :per_page - gives number of results per page for paging
+      #       If not given Number of results per page is defined by @option[:per_page] parameter (default - 10000)
       #
       # === Output
       #
@@ -176,7 +178,7 @@ module De
         super
 
         page = params && params[:page] ? params[:page] : 1
-        per_page = @options[:per_page] || 10000
+        per_page = params && params[:per_page] ? params[:per_page] : @options[:per_page] || 10000
 
         search_string = "Sunspot.search(#{Kernel.const_get(@klass)}) do
           #{children.map {|child| child.evaluate + "\n" } }
@@ -186,6 +188,22 @@ module De
 
         instance_eval search_string
       end
+
+      #
+      # Evaluates expression and returns results of obtained sunspot request
+      #
+      # === Input
+      #
+      # params<Hash>:: optional parameters hash passed to evaluate method
+      #
+      # === Output
+      #
+      #  <mixed> - object of class @klass Sunspot search is built on
+      #
+      def results(params = nil)
+        evaluate(params).results
+      end
+      
     end
   end
 end

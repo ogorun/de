@@ -31,13 +31,13 @@ module De
 
       def initialize(operator, operands = nil)
         @operator = operator
-        super("#{operator}-#{rand(1000)}", operands)
+        super("#{operator}-#{rand(1000)}", operator, operands)
       end
 
       def evaluate
         super
         "#{@operator} do
-          #{children.map {|child| child.evaluate + "\n" } }
+          #{children.map { |child| child.evaluate + "\n" } }
         end"
       end
       
