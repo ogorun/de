@@ -158,7 +158,7 @@ module De
         case root.options[:properties][@content.to_sym][:type]
         when :text, :string
           "'#{val.escape_apos}'"
-        when :time
+        when :time, :date
           "'#{val.to_s(:db)}'"
         when :float
           val.to_f
