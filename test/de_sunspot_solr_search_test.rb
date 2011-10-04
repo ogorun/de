@@ -209,6 +209,64 @@ class DeSunspotSolrSearchTest < Test::Unit::TestCase
     assert_instance_of(And, and_operator2)
     assert_equal(2, and_operator2.children.length)
     assert(!and_operator2[operand.name].nil? && !and_operator2[operand2.name].nil? || !and_operator2[operand3.name].nil? && !and_operator2[operand4.name].nil?)
+
+    ###########
+    search1 = Search.new('search_product1', 'SomeClass', {
+      :properties => {
+        :client_id => {:type => :integer, :dynamic => false},
+      },
+      :dynamics => {:integer => :int_params, :string => :string_params, :time => :time_params, :text => :string_params}
+    })
+    search1 << operand
+    search1 << operand2
+    search2 = Search.new('search_product1', 'SomeClass', {
+      :properties => {
+        :client_id => {:type => :integer, :dynamic => false},
+      },
+      :dynamics => {:integer => :int_params, :string => :string_params, :time => :time_params, :text => :string_params}
+    })
+    search2 << operand3
+    search2 << operand4
+    search3 = Search.new('search_product1', 'SomeClass', {
+      :properties => {
+        :client_id => {:type => :integer, :dynamic => false},
+      },
+      :dynamics => {:integer => :int_params, :string => :string_params, :time => :time_params, :text => :string_params}
+    })
+    operand5 = EqualTo.new(:client_id, 61)
+    operand6 = EqualTo.new(:client_id, 92)
+    search3 << operand5
+    search3 << operand6
+    search = search1 | search2 | search3
+    assert_equal(1, search.children.length)
+    assert_instance_of(De::SunspotSolr::Or, search.first_child)
+    assert_equal(3, search.first_child.children.length)
+    (0..2).each do |index|
+      assert_instance_of(De::SunspotSolr::And, search.first_child.children[index])
+      assert_equal(2,search.first_child.children[index].children.length)
+    end
+
+    #########
+    search1 = Search.new('search_product1', 'SomeClass', {
+      :properties => {
+        :client_id => {:type => :integer, :dynamic => false},
+      },
+      :dynamics => {:integer => :int_params, :string => :string_params, :time => :time_params, :text => :string_params}
+    })
+    search1 << operand
+    search2 = Search.new('search_product1', 'SomeClass', {
+      :properties => {
+        :client_id => {:type => :integer, :dynamic => false},
+      },
+      :dynamics => {:integer => :int_params, :string => :string_params, :time => :time_params, :text => :string_params}
+    })
+    search2 << operand3
+    search = search1 | search2
+    assert_equal(1, search.children.length)
+    assert_instance_of(De::SunspotSolr::Or, search.first_child)
+    assert_equal(2, search.first_child.children.length)
+    assert_equal(operand, search.first_child.children[0])
+    assert_equal(operand3, search.first_child.children[1])
   end
 
   def test_intersection

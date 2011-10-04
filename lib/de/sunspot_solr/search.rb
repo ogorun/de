@@ -143,8 +143,17 @@ module De
       #
       def |(obj)
         expression_content = []
-        expression_content << SunspotSolr::And.new(self.children) if self.has_children?
-        expression_content << SunspotSolr::And.new(obj.children) if obj.has_children?
+        [self, obj].select { |element| element.has_children? }.each do |element|
+          if element.children.length == 1
+            if element.first_child.is_a?(De::SunspotSolr::Or)
+              element.first_child.children.each { |child| expression_content << child }
+            else
+              expression_content << element.first_child
+            end
+          else
+            expression_content << SunspotSolr::And.new(element.children)
+          end
+        end
 
         Search.new("#{@name}+#{obj.name}", @klass, @options, expression_content.length > 0 ? [SunspotSolr::Or.new(expression_content)] : nil)
       end
@@ -204,6 +213,20 @@ module De
         evaluate(params).results
       end
       
+#      def to_hash
+#        children_hash = children.inject({}) { |result, child| result.merge(child.to_hash) }
+#        {:options => options, :children => children_hash}
+#      end
+#
+#      class << self
+#
+#        def load(hash)
+#          raise Error::InvalidExpressionError if (hash.keys - [:name, :content, :class, :children]).length > 0
+#
+#          obj = hash[:class].constantize.send(:new, hash[:name], hash[:content])
+#          hash[:children].each { |child| obj << load(child) }
+#        end
+#      end
     end
   end
 end
