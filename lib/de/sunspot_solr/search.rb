@@ -126,7 +126,8 @@ module De
       #  Search object
       #
       def &(obj)
-        Search.new("#{@name}+#{obj.name}", @klass, @options, [self.children, obj.children].flatten)
+        children = (self.children + obj.children).collect { |child| child.copy  }
+        Search.new("#{@name}+#{obj.name}", @klass, @options, children)
       end
 
       #
@@ -146,12 +147,12 @@ module De
         [self, obj].select { |element| element.has_children? }.each do |element|
           if element.children.length == 1
             if element.first_child.is_a?(De::SunspotSolr::Or)
-              element.first_child.children.each { |child| expression_content << child }
+              element.first_child.children.each { |child| expression_content << child.copy }
             else
-              expression_content << element.first_child
+              expression_content << element.first_child.copy
             end
           else
-            expression_content << SunspotSolr::And.new(element.children)
+            expression_content << SunspotSolr::And.new(element.children.collect { |child| child.copy })
           end
         end
 

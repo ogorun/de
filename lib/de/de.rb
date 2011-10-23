@@ -114,6 +114,13 @@ module De
       str
     end
 
+    def copy
+      obj = self.clone
+      obj.parent = nil
+
+      obj
+    end
+
 #    def to_hash
 #      {
 #        :name => @name,
@@ -128,14 +135,7 @@ module De
 #      def load(hash)
 #        raise Error::InvalidExpressionError if (hash.keys - [:name, :content, :class, :children]).length > 0
 #
-#        klass = hash[:class].constantize
-#        params = case klass.method(:new).arity
-#        when -1,0 then []
-#        when -2,1 then [hash[:name]]
-#        else [hash[:name], hash[:content]]
-#        end
-#
-#        obj = klass.send(:new, *params)
+#        obj = hash[:class].constantize.send(:new, hash[:name], hash[:content])
 #        hash[:children].each { |child| obj << load(child) }
 #      end
     end
