@@ -16,3 +16,15 @@ Version 0.0.4 (September 23, 2011)
 *) Bug fix: De::Expression prevents error-prone trials to add child with name already existent in tree
 *) De::SunspotSolr::Search#evaluate support for per_page parameter
 *) De::SunspotSolr::Search#results method added
+
+Version 0.0.5 (October 4, 2011)
+===============================
+Sunspot solr serach union build optimizaton
+
+Version 0.0.6 (October 23, 2011)
+================================
+Bug fix: & and | operations should not influence operands object
+
+Version 0.0.7 (Novermber 7, 2011)
+=================================
+Bug fix: Date type was not supported for Interval operands

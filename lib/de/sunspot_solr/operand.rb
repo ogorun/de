@@ -186,7 +186,7 @@ module De
     class IntervalSunspotOperand < SunspotOperand
 
       def valid?
-        super && root.options[:properties][@content.to_sym] && root.options[:properties][@content.to_sym][:type] == :time
+        super && root.options[:properties][@content.to_sym] && [:date, :time].include?(root.options[:properties][@content.to_sym][:type])
       end
 
       protected
