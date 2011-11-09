@@ -28,3 +28,6 @@ Bug fix: & and | operations should not influence operands object
 Version 0.0.7 (Novermber 7, 2011)
 =================================
 Bug fix: Date type was not supported for Interval operands
+
+Version 0.0.8 (November 9, 2011)
+Bug fix: Date interval type evaluation fix

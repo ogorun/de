@@ -192,7 +192,7 @@ module De
       protected
 
       def value_to_compare
-        now = Time.now
+        now = root.options[:properties][@content.to_sym][:type] == :date ? Date.today : Time.now
         if @value.is_a?(Array)
           shifted_value = "[#{@value.map {|element| atomic_value(now  + element.days)  }.join(',')}]"
         elsif @value.is_a?(Range)
