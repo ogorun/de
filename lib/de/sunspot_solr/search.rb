@@ -189,12 +189,14 @@ module De
 
         page = params && params[:page] ? params[:page] : 1
         per_page = params && params[:per_page] ? params[:per_page] : @options[:per_page] || 10000
+        order_by = params && params[:order_by] ? params[:order_by] : {:id => :asc}
 
-        search_string = "Sunspot.search(#{Kernel.const_get(@klass)}) do
+        search_string = %{Sunspot.search(#{Kernel.const_get(@klass)}) do
           #{children.map {|child| child.evaluate + "\n" } }
 
           paginate(:page => #{page}, :per_page => #{per_page})
-        end"
+          order_by(:#{order_by.keys[0].to_s}, :#{order_by.values[0].to_s})
+        end}
 
         instance_eval search_string
       end
