@@ -178,6 +178,7 @@ module De
       #     :page - gives page for paging (default - 1)
       #     :per_page - gives number of results per page for paging
       #       If not given Number of results per page is defined by @option[:per_page] parameter (default - 10000)
+      #     :order_by - hash {<field> => <sorting direction>}, i.e. {:client_id => :desc}
       #
       # === Output
       #

@@ -30,4 +30,9 @@ Version 0.0.7 (Novermber 7, 2011)
 Bug fix: Date type was not supported for Interval operands
 
 Version 0.0.8 (November 9, 2011)
+================================
 Bug fix: Date interval type evaluation fix
+
+Version 0.0.9 (November 20, 2011)
+=================================
+Sorting parameter :order_by added to SunspotSolr::Search
