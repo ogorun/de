@@ -36,3 +36,7 @@ Bug fix: Date interval type evaluation fix
 Version 0.0.9 (November 20, 2011)
 =================================
 Sorting parameter :order_by added to SunspotSolr::Search
+
+Version 0.0.10 (November 9, 2011)
+================================
+Bug fix: Invalid evaluation in ruby 1.9

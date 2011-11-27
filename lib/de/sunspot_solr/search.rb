@@ -193,7 +193,7 @@ module De
         order_by = params && params[:order_by] ? params[:order_by] : {:id => :asc}
 
         search_string = %{Sunspot.search(#{Kernel.const_get(@klass)}) do
-          #{children.map {|child| child.evaluate + "\n" } }
+          #{children.map {|child| child.evaluate }.join("\n") }
 
           paginate(:page => #{page}, :per_page => #{per_page})
           order_by(:#{order_by.keys[0].to_s}, :#{order_by.values[0].to_s})
