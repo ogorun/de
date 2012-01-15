@@ -37,13 +37,13 @@ module De
       def evaluate
         super
         "#{@operator} do
-          #{children.map { |child| child.evaluate + "\n" } }
+          #{children.map { |child| child.evaluate }.join("\n") }
         end"
       end
       
       #
       # Adds operator or operand as a child in case equal one doesn't exist already
-      # otherwize old one is returned
+      # otherwise old one is returned
       #
       # === Input
       #
