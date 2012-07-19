@@ -20,7 +20,7 @@ dynamic expression of arbitrary complecity and operands/operators nature}
   s.require_paths = ["lib"]
 
   s.add_dependency 'rubytree', '~> 0.8.1'
-  s.add_dependency 'activesupport', '~> 3.2.6'
+  s.add_dependency 'activesupport', '>= 2.3.10'
   s.add_development_dependency 'rack-test'
 end
 
