@@ -13,10 +13,11 @@ Tree example:
    ----- +
    ------- a
    ------- b
+   ----- c
    --- d
 
    Here "+" and "*" are operators,
-   "a", "b" and "d" are operands
+   "a", "b", "c" and "d" are operands
 
 Expression tree structure is built with the help of <rubytree> gem
 (https://rubygems.org/gems/rubytree)
